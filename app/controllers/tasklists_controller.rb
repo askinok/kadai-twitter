@@ -24,13 +24,13 @@ class TasklistsController < ApplicationController
   end
 
   def edit
-    @tasklist = Tasklist.new(params[:id])
+    @tasklist = Tasklist.find(params[:id])
   end
 
   def update
     @tasklist = Tasklist.find(params[:id])
 
-    if @taslist.update(taslist_params)
+    if @tasklist.update(tasklist_params)
       flash[:success] = 'Tasklist は正常に更新されました'
       redirect_to @tasklist
     else
