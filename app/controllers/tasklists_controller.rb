@@ -1,10 +1,11 @@
 class TasklistsController < ApplicationController
+  before_action :set_tasklist, only: [:show, :edit, :update, :destroy]
   def index
     @tasklists = Tasklist.all
   end
 
   def show
-     @tasklist = Tasklist.find(params[:id])
+     set_tasklist
   end
 
   def new
@@ -24,11 +25,11 @@ class TasklistsController < ApplicationController
   end
 
   def edit
-    @tasklist = Tasklist.find(params[:id])
+    set_tasklist
   end
 
   def update
-    @tasklist = Tasklist.find(params[:id])
+    set_tasklist
 
     if @tasklist.update(tasklist_params)
       flash[:success] = 'Tasklist は正常に更新されました'
@@ -40,7 +41,7 @@ class TasklistsController < ApplicationController
   end
 
   def destroy
-    @tasklist = Tasklist.find(params[:id])
+    set_tasklist
     @tasklist.destroy
 
     flash[:success] = 'Tasklist は正常に削除されました'
@@ -53,6 +54,9 @@ class TasklistsController < ApplicationController
   def tasklist_params
     params.require(:tasklist).permit(:content)
   end
-
+  
+  def set_tasklist
+    @tasklist = Tasklist.find(params[:id])
+  end
 
 end
