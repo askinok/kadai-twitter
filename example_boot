@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>レスポンシブデザイン</title>
+  </head>
+  <body>
+    <h1>viewportについて</h1>
+    <p>viewportとはスマートフォンやPC画面における表示領域のことです。head要素内のmetaタグで指定をします。</p>
+  </body>
+</html>
