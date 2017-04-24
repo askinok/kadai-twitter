@@ -1,5 +1,6 @@
 class TasklistsController < ApplicationController
-  before_action :set_tasklist, only: [:show, :edit, :update, :destroy]
+  before_action :require_user_logged_in
+  before_action :correct_user, only: [:destroy]
   
   def index
     @tasklists = Tasklist.all.page(params[:page]).per(3)
@@ -14,14 +15,14 @@ class TasklistsController < ApplicationController
   end
 
   def create
-    @tasklist = Tasklist.new(tasklist_params)
-
+    @tasklist = current_user.tasklists.build(tasklist_params)
     if @tasklist.save
-      flash[:success] = 'Tasklist が正常に投稿されました'
-      redirect_to @tasklist
+      flash[:success] = 'タスクを投稿しました。'
+      redirect_to root_url
     else
-      flash.now[:danger] = 'Tasklist が投稿されませんでした'
-      render :new
+      @tasklists = current_user.tasklists.order('created_at DESC').page(params[:page])
+      flash.now[:danger] = 'タスクの投稿に失敗しました。'
+      render 'toppages/index'
     end
   end
 
@@ -51,7 +52,7 @@ class TasklistsController < ApplicationController
 
   private
 
-  # Strong Parameter
+
   def tasklist_params
     params.require(:tasklist).permit(:content, :status)
   end
@@ -60,5 +61,12 @@ class TasklistsController < ApplicationController
     @tasklist = Tasklist.find(params[:id])
   end
 
+
+  def correct_user
+    @tasklist = current_user.tasklists.find_by(id: params[:id])
+    unless @tasklist
+      redirect_to root_path
+    end
+  end
 
 end
