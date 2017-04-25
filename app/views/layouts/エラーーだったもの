@@ -3,10 +3,10 @@
   <div class="alert alert-warning">
     <ul>
       
-<% model.errors.full_messages.each do |task| %>
+<% model.errors.full_messages.each do |tasklist| %>
 
         <li>
-<%= task %>
+<%= tasklist %>
 </li>
       
 <% end %>

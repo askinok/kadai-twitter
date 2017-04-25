@@ -1,9 +1,9 @@
-class TasklistsController < ApplicationController
+class TasksController < ApplicationController
   before_action :require_user_logged_in
   before_action :correct_user, only: [:destroy]
   
   def index
-    @tasklists = Tasklist.all.page(params[:page]).per(3)
+    @tasklists = Task.all.page(params[:page]).per(3)
   end
 
   def show
@@ -11,23 +11,23 @@ class TasklistsController < ApplicationController
   end
 
   def new
-    @tasklist = Tasklist.new
+    @tasklist = Task.new
   end
 
   def create
-    @tasklist = current_user.tasklists.build(tasklist_params)
+    @tasklist = current_user.tasks.build(tasklist_params)
     if @tasklist.save
       flash[:success] = 'タスクを投稿しました。'
       redirect_to root_url
     else
-      @tasklists = current_user.tasklists.order('created_at DESC').page(params[:page])
+      @tasklists = current_user.tasks.order('created_at DESC').page(params[:page])
       flash.now[:danger] = 'タスクの投稿に失敗しました。'
       render 'toppages/index'
     end
   end
 
   def edit
-    set_tasklist
+        set_tasklist
   end
 
   def update
@@ -35,7 +35,7 @@ class TasklistsController < ApplicationController
 
     if @tasklist.update(tasklist_params)
       flash[:success] = 'Tasklist は正常に更新されました'
-      redirect_to @tasklist
+      redirect_to root_url
     else
       flash.now[:danger] = 'Tasklist は更新されませんでした'
       render :edit
@@ -43,27 +43,25 @@ class TasklistsController < ApplicationController
   end
 
   def destroy
-    set_tasklist
     @tasklist.destroy
-
-    flash[:success] = 'Tasklist は正常に削除されました'
-    redirect_to tasklists_url
+    flash[:success] = 'タスク は正常に削除されました'
+    redirect_to root_url
   end
 
   private
 
 
   def tasklist_params
-    params.require(:tasklist).permit(:content, :status)
+    params.require(:task).permit(:content, :status)
   end
   
   def set_tasklist
-    @tasklist = Tasklist.find(params[:id])
+    @tasklist = Task.find(params[:id])
   end
 
 
   def correct_user
-    @tasklist = current_user.tasklists.find_by(id: params[:id])
+    @tasklist = current_user.tasks.find_by(id: params[:id])
     unless @tasklist
       redirect_to root_path
     end

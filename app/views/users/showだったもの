@@ -22,11 +22,10 @@
             <li class="
 <%= 'active' if current_page?(user_path(@user)) %>
 ">
-
-
 <%= link_to user_path(@user) do %>
-TaskLists
-<span class="badge"><%= @count_tasks %></span>
+TaskLists <span class="badge">
+<%= @count_tasklists %>
+</span>
 <% end %>
 </li>      
     </ul>
