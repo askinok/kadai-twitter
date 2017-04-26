@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
-  before_action :correct_user, only: [:destroy, :create, :update, :edit]
+  before_action :correct_user, only: [:destroy, :update ]
   
   def index
     @tasklists = Task.all.page(params[:page]).per(3)
